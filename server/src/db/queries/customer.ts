@@ -25,15 +25,18 @@ export async function getLeaderboard(knex: any, countryFilter: string = 'ALL') {
 
     const results = await query;
 
+    console.log("Raw query results:", results);
     return results
         .map((row: any) => {
-            const profit = row.totalWon - row.totalLost;
-            const winPercentage = row.totalBets > 0 ? (row.wins / row.totalBets) * 100 : 0;
+            const profit = Number(row.totalwon) - Number(row.totallost);
+            const totalBets = Number(row.totalbets);
+            const wins = Number(row.wins);
+            const winPercentage = totalBets > 0 ? (wins / totalBets) * 100 : 0;
             return {
                 id: row.id,
-                fullName: row.fullName,
+                fullName: row.fullname, // use lowercase key from raw result
                 country: row.country,
-                totalBets: Number(row.totalBets),
+                totalBets: totalBets,
                 winPercentage: Number(winPercentage.toFixed(2)),
                 profit: Number(profit.toFixed(2))
             };

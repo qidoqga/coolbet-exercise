@@ -1,7 +1,8 @@
+// client/src/Leaderboard.tsx
 import React, { useState, useEffect } from 'react';
 
 interface LeaderboardItem {
-    id: number;
+    id: string;
     fullName: string;
     country: string;
     totalBets: number;
@@ -13,17 +14,24 @@ const Leaderboard: React.FC = () => {
     const [leaderboard, setLeaderboard] = useState<LeaderboardItem[]>([]);
     const [country, setCountry] = useState<string>('ALL');
 
-    const fetchLeaderboard = async () => {
+    const fetchLeaderboard = async (selectedCountry: string) => {
+        console.log("Fetching leaderboard for:", selectedCountry);
         try {
-            const res = await fetch('http://localhost:3000/leaderboard', { method: 'GET' })
-            setLeaderboard(await res.json());
+            const response = await fetch(`/leaderboard?country=${selectedCountry}`, { cache: 'no-store' });
+            console.log(response)
+            if (!response.ok) {
+                throw new Error(`Network response was not ok: ${response.statusText}`);
+            }
+            const data: LeaderboardItem[] = await response.json();
+            console.log("Received data:", data);
+            setLeaderboard(data);
         } catch (err) {
-            console.error(err);
+            console.error('Error fetching leaderboard:', err);
         }
     };
 
     useEffect(() => {
-        fetchLeaderboard();
+        fetchLeaderboard(country);
     }, [country]);
 
     return (
@@ -34,12 +42,19 @@ const Leaderboard: React.FC = () => {
                 <select
                     id="country-filter"
                     value={country}
-                    onChange={(e) => setCountry(e.target.value)}
+                    onChange={(e) => {
+                        console.log("Selected country:", e.target.value);
+                        setCountry(e.target.value)
+                    }
+                    }
                 >
                     <option value="ALL">ALL</option>
-                    {/* Add more country options as needed */}
                     <option value="Estonia">Estonia</option>
-                    <option value="USA">USA</option>
+                    <option value="Finland">Finland</option>
+                    <option value="Norway">Norway</option>
+                    <option value="Chile">Chile</option>
+                    <option value="Canada">Canada</option>
+                    {/* Add more options as needed */}
                 </select>
             </div>
             <table>
