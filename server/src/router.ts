@@ -14,6 +14,7 @@ router.get('/leaderboard', async (req, res) => {
     const country = req.query.country || 'ALL';
     try {
         const leaderboard = await getLeaderboard(knex, country as string);
+        res.setHeader('Content-Type', 'application/json');
         res.json(leaderboard);
     } catch (error: any) {
         res.status(500).json({ error: error.message });

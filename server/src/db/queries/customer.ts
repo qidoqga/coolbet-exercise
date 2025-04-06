@@ -5,7 +5,7 @@ export const getCustomers = () => db('customer').select('*');
 
 export async function getLeaderboard(knex: any, countryFilter: string = 'ALL') {
     let query = db('customer')
-        .from('customer') // Explicitly define the FROM table
+        .from('customer')
         .select(
             'customer.id',
             db.raw("customer.first_name || ' ' || customer.last_name as fullName"),
@@ -34,7 +34,7 @@ export async function getLeaderboard(knex: any, countryFilter: string = 'ALL') {
             const winPercentage = totalBets > 0 ? (wins / totalBets) * 100 : 0;
             return {
                 id: row.id,
-                fullName: row.fullname, // use lowercase key from raw result
+                fullName: row.fullname,
                 country: row.country,
                 totalBets: totalBets,
                 winPercentage: Number(winPercentage.toFixed(2)),

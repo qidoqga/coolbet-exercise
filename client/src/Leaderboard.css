@@ -1,0 +1,26 @@
+.table-container {
+    margin: 20px auto;
+    max-width: 900px;
+    padding: 0 15px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: sans-serif;
+    font-size: 16px;
+    margin: 20px 0;
+}
+
+thead tr {
+    background-color: #009879;
+    color: #ffffff;
+    text-align: left;
+    font-weight: bold;
+}
+
+th, td {
+    padding: 12px 15px;
+    border: 1px solid #dddddd;
+    background-color: #1a1a1a;
+}
